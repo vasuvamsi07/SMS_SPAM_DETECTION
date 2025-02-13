@@ -1,10 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("JavaScript Loaded Successfully!");
+    console.log("JavaScript Loaded Successfully!");  // Debugging message
 
     const checkButton = document.getElementById("checkButton");
     const resultDiv = document.getElementById("result");
     const smsInput = document.getElementById("smsInput");
 
+    // Debugging: Check if elements exist
     if (!checkButton || !resultDiv || !smsInput) {
         console.error("Error: Some HTML elements were not found!");
         return;
@@ -22,29 +23,27 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Sending request to API...");
             
             let response = await fetch("https://sms-spam-detection-cspy.onrender.com/predict", {
-                method: "POST",
+                method: "POST",   // Ensure API supports POST
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ message: inputText })
             });
 
-            let data = await response.json();
-            console.log("API Response:", data);  // Debugging
-
-            // Ensure API response has "result" key
-            if (typeof data.result === "undefined") {
-                resultDiv.innerHTML = "<p style='color: orange;'>Unexpected API response format!</p>";
-                return;
+            if (!response.ok) {
+                throw new Error("Server Error: " + response.status);
             }
 
-            // Correct spam detection logic
+            let data = await response.json();
+            console.log("API Response:", data);
+
+            // Display Result
             if (data.result === 1) {
                 resultDiv.innerHTML = "<p style='color: red; font-weight: bold;'>Spam!</p>";
             } else if (data.result === 0) {
                 resultDiv.innerHTML = "<p style='color: green; font-weight: bold;'>Not Spam</p>";
             } else {
-                resultDiv.innerHTML = "<p style='color: orange;'>Unexpected API response value.</p>";
+                resultDiv.innerHTML = "<p style='color: orange;'>Unexpected response from API.</p>";
             }
 
         } catch (error) {
