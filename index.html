@@ -3,21 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMS Spam Detection</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        textarea { width: 80%; height: 100px; margin-top: 10px; }
-        button { margin-top: 10px; padding: 10px 20px; cursor: pointer; }
-        #result { margin-top: 20px; font-size: 20px; font-weight: bold; }
-    </style>
+    <title>SMS Spam Detector</title>
 </head>
 <body>
-    <h1>Enter SMS Text:</h1>
-    <textarea id="smsInput" placeholder="Type your message here..."></textarea><br>
-    <button id="checkBtn">Check</button>
-    <p id="result"></p>
-    <script defer src="script.js"></script>
+    <h2>SMS Spam Detection</h2>
+    
+    <label for="smsInput">Enter SMS:</label>
+    <input type="text" id="smsInput" placeholder="Type message here">
+    
+    <button id="checkButton">Check</button>
+    
+    <div id="result"></div>
+
+    <script src="script.js"></script> 
 </body>
 </html>
-
-
