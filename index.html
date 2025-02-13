@@ -1,13 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>SMS Spam Detector</title>
-    <script src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Spam Detection</title>
 </head>
 <body>
-    <h2>Enter SMS Text:</h2>
-    <textarea id="smsText" rows="4" cols="50"></textarea><br><br>
-    <button onclick="predictSpam()">Check</button>
+
+    <h1>Enter SMS Text:</h1>
+    <textarea id="smsInput" rows="4" cols="50"></textarea>
+    <br>
+    <button id="submit">Check</button>
     <p id="result"></p>
+
+    <!-- JavaScript file (Ensure this is just before closing body tag) -->
+    <script src="script.js"></script>
+
 </body>
 </html>
+
