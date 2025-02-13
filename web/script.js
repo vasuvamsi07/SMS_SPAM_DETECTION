@@ -1,6 +1,6 @@
 async function predictSpam() {
     let text = document.getElementById("smsText").value;
-    let response = await fetch("https://your-github-api-url/predict", {
+    let response = await fetch("https://sms-spam-detection-kb9w.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: text })
