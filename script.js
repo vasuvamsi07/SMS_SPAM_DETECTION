@@ -1,40 +1,46 @@
-// Wait for the DOM to load before accessing elements
 document.addEventListener("DOMContentLoaded", function () {
-    const checkButton = document.getElementById("checkBtn");
-    const inputField = document.getElementById("smsInput");
+    const checkButton = document.getElementById("checkButton");
     const resultDiv = document.getElementById("result");
 
-    if (!checkButton || !inputField || !resultDiv) {
-        console.error("One or more elements are missing in the HTML!");
+    if (!checkButton || !resultDiv) {
+        console.error("Button or result div not found!");
         return;
     }
 
-    checkButton.addEventListener("click", function () {
-        const smsText = inputField.value.trim();
-
-        if (smsText === "") {
-            resultDiv.innerHTML = "Please enter a message.";
+    checkButton.addEventListener("click", async function () {
+        const inputText = document.getElementById("smsInput").value.trim();
+        if (!inputText) {
+            resultDiv.innerHTML = "<p style='color: red;'>Please enter a message!</p>";
             return;
         }
 
-        fetch("https://sms-spam-detection-cspy.onrender.com/predict", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: smsText })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.result === 1) {
-                resultDiv.innerHTML = "🚨 Spam Message!";
-                resultDiv.style.color = "red";
-            } else {
-                resultDiv.innerHTML = "✅ Not Spam!";
-                resultDiv.style.color = "green";
+        try {
+            // Using Fetch API with both GET and POST methods
+            let response = await fetch("https://sms-spam-detection-cspy.onrender.com/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: inputText })
+            });
+
+            if (!response.ok) {
+                throw new Error("Server Error: " + response.status);
             }
-        })
-        .catch(error => {
+
+            let data = await response.json();
+            console.log("API Response:", data);
+
+            // Displaying result
+            if (data.result === 1) {
+                resultDiv.innerHTML = "<p style='color: red; font-weight: bold;'>Spam!</p>";
+            } else {
+                resultDiv.innerHTML = "<p style='color: green; font-weight: bold;'>Not Spam</p>";
+            }
+
+        } catch (error) {
             console.error("Error:", error);
-            resultDiv.innerHTML = "Error contacting the server!";
-        });
+            resultDiv.innerHTML = "<p style='color: red;'>Error in prediction.</p>";
+        }
     });
 });
