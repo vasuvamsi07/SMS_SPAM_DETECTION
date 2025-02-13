@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultDiv = document.getElementById("result");
     const smsInput = document.getElementById("smsInput");
 
-    if (!checkButton || !resultDiv || !smsInput) {
-        console.error("Error: Some HTML elements were not found!");
-        return;
-    }
+    //if (!checkButton || !resultDiv || !smsInput) {
+        //console.error("Error: Some HTML elements were not found!");
+        //return;
+    //}
 
     checkButton.addEventListener("click", async function () {
         const inputText = smsInput.value.trim();
