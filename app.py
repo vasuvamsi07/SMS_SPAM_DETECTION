@@ -1,22 +1,26 @@
-import pickle
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# Load the trained model and vectorizer
-with open("model.pkl", "rb") as model_file:
-    model = pickle.load(model_file)
+@app.route('/')
+def home():
+    return "Welcome to SMS Spam Detection API"
 
-with open("vectorizer.pkl", "rb") as vectorizer_file:
-    vectorizer = pickle.load(vectorizer_file)
-
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
-    data = request.json['message']
-    transformed_data = vectorizer.transform([data])
-    prediction = model.predict(transformed_data)[0]
-    
-    return jsonify({"spam": bool(prediction)})
+    if request.method == 'GET':
+        return jsonify({"message": "Use POST request to send data"}), 405  # Status 405: Method Not Allowed
+
+    # Handling POST request
+    data = request.get_json()
+    if not data or 'message' not in data:
+        return jsonify({"error": "Missing 'message' field"}), 400  # Status 400: Bad Request
+
+    # Example prediction logic (Replace with your model logic)
+    spam_keywords = ["lottery", "win", "prize", "free"]
+    prediction = "spam" if any(word in data['message'].lower() for word in spam_keywords) else "ham"
+
+    return jsonify({"prediction": prediction})
 
 if __name__ == '__main__':
     app.run(debug=True)
