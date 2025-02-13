@@ -1,21 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("JavaScript Loaded Successfully!");
+
     const checkButton = document.getElementById("checkButton");
     const resultDiv = document.getElementById("result");
+    const smsInput = document.getElementById("smsInput");
 
-    if (!checkButton || !resultDiv) {
-        console.error("Button or result div not found!");
+    if (!checkButton || !resultDiv || !smsInput) {
+        console.error("Error: Some HTML elements were not found!");
         return;
     }
 
     checkButton.addEventListener("click", async function () {
-        const inputText = document.getElementById("smsInput").value.trim();
+        const inputText = smsInput.value.trim();
+
         if (!inputText) {
             resultDiv.innerHTML = "<p style='color: red;'>Please enter a message!</p>";
             return;
         }
 
         try {
-            // Using Fetch API with both GET and POST methods
+            console.log("Sending request to API...");
+            
             let response = await fetch("https://sms-spam-detection-cspy.onrender.com/predict", {
                 method: "POST",
                 headers: {
@@ -24,23 +29,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify({ message: inputText })
             });
 
-            if (!response.ok) {
-                throw new Error("Server Error: " + response.status);
+            let data = await response.json();
+            console.log("API Response:", data);  // Debugging
+
+            // Ensure API response has "result" key
+            if (typeof data.result === "undefined") {
+                resultDiv.innerHTML = "<p style='color: orange;'>Unexpected API response format!</p>";
+                return;
             }
 
-            let data = await response.json();
-            console.log("API Response:", data);
-
-            // Displaying result
+            // Correct spam detection logic
             if (data.result === 1) {
                 resultDiv.innerHTML = "<p style='color: red; font-weight: bold;'>Spam!</p>";
-            } else {
+            } else if (data.result === 0) {
                 resultDiv.innerHTML = "<p style='color: green; font-weight: bold;'>Not Spam</p>";
+            } else {
+                resultDiv.innerHTML = "<p style='color: orange;'>Unexpected API response value.</p>";
             }
 
         } catch (error) {
             console.error("Error:", error);
-            resultDiv.innerHTML = "<p style='color: red;'>Error in prediction.</p>";
+            resultDiv.innerHTML = "<p style='color: red;'>API Error: " + error.message + "</p>";
         }
     });
 });
