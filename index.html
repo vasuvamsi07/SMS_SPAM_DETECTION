@@ -9,39 +9,66 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 50px;
+            background-color: #f0f2f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         input {
             width: 80%;
-            padding: 10px;
+            padding: 12px;
             margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
         }
         button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             cursor: pointer;
             background-color: #28a745;
             color: white;
             border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
         }
         #result {
             margin-top: 20px;
             font-size: 18px;
             font-weight: bold;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .spam {
+            color: #dc3545;
+            background-color: #f8d7da;
+        }
+        .ham {
+            color: #28a745;
+            background-color: #d4edda;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h2>SMS Spam Detector</h2>
+        
+        <label for="smsInput">Enter SMS:</label>
+        <input type="text" id="smsInput" placeholder="Type your message here">
 
-    <h2>SMS Spam Detector</h2>
-    
-    <label for="smsInput">Enter SMS:</label>
-    <input type="text" id="smsInput" placeholder="Type your message here">
+        <button id="checkButton">Check</button>
 
-    <button id="checkButton">Check</button>
+        <div id="result"></div>
+    </div>
 
-    <div id="result"></div>
-
-    <!-- Make sure the script is linked at the end -->
-    <script src="script.js"></script> 
-
+    <script src="/script.js"></script>
 </body>
 </html>
