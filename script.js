@@ -5,11 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultDiv = document.getElementById("result");
     const smsInput = document.getElementById("smsInput");
 
-    //if (!checkButton || !resultDiv || !smsInput) {
-        //console.error("Error: Some HTML elements were not found!");
-        //return;
-    //}
-
     checkButton.addEventListener("click", async function () {
         const inputText = smsInput.value.trim();
 
@@ -41,10 +36,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            if (data.result === 1) {
+            // Updated checks for "spam" or "ham"
+            if (data.result === "spam") {
                 resultDiv.innerHTML = "<p style='color: red; font-weight: bold;'>Spam!</p>";
-            } else if (data.result === 0) {
-                resultDiv.innerHTML = "<p style='color: green; font-weight: bold;'>Not Spam</p>";
+            } else if (data.result === "ham") {
+                resultDiv.innerHTML = "<p style='color: green; font-weight: bold;'>Not Spam (Ham)</p>";
             } else {
                 resultDiv.innerHTML = "<p style='color: orange;'>Unexpected API response value.</p>";
             }
