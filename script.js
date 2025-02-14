@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             console.log("Sending request to API...");
 
-            let response = await fetch("https://sms-spam-detection-cspy.onrender.com/predict", {
+            let response = await fetch("/predict", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -31,23 +31,17 @@ document.addEventListener("DOMContentLoaded", function () {
             let data = await response.json();
             console.log("API Response:", data);
 
-            if (typeof data.result === "undefined") {
-                resultDiv.innerHTML = "<p style='color: orange;'>Unexpected API response format!</p>";
-                return;
-            }
-
-            // Updated checks for "spam" or "ham"
-            if (data.result === "spam") {
-                resultDiv.innerHTML = "<p style='color: red; font-weight: bold;'>Spam!</p>";
-            } else if (data.result === "ham") {
-                resultDiv.innerHTML = "<p style='color: green; font-weight: bold;'>Not Spam (Ham)</p>";
+            if (data.prediction === "spam") {
+                resultDiv.className = "spam";
+                resultDiv.textContent = "This message is SPAM!";
             } else {
-                resultDiv.innerHTML = "<p style='color: orange;'>Unexpected API response value.</p>";
+                resultDiv.className = "ham";
+                resultDiv.textContent = "This message is NOT spam";
             }
 
         } catch (error) {
             console.error("Error:", error);
-            resultDiv.innerHTML = "<p style='color: red;'>API Error: " + error.message + "</p>";
-        }
-    });
+            resultDiv.innerHTML = "<p style='color: red;'>Error: " + error.message + "</p>";
+        }
+    });
 });
