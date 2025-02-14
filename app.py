@@ -1,28 +1,24 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Flask, request, render_template
+import pickle
 
 app = Flask(__name__)
-CORS(app) 
 
-@app.route('/')
+# Load trained model and vectorizer
+model = pickle.load(open("model.pkl", "rb"))
+vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
+
+@app.route("/")
 def home():
-    return "Welcome to SMS Spam Detection API"
+    return render_template("index.html")
 
-@app.route('/predict', methods=['GET', 'POST'])
+@app.route("/predict", methods=["POST"])
 def predict():
-    if request.method == 'GET':
-        return jsonify({"message": "Use POST request to send data"}), 405  # Status 405: Method Not Allowed
+    message = request.form["message"]
+    input_data = vectorizer.transform([message])
+    prediction = model.predict(input_data)[0]
 
-    # Handling POST request
-    data = request.get_json()
-    if not data or 'message' not in data:
-        return jsonify({"error": "Missing 'message' field"}), 400  # Status 400: Bad Request
+    result = "Spam" if prediction == 1 else "Not Spam"
+    return render_template("index.html", prediction_text=f"Message is: {result}")
 
-    # Example prediction logic (Replace with your model logic)
-    spam_keywords = ["lottery", "win", "prize", "free"]
-    prediction = "spam" if any(word in data['message'].lower() for word in spam_keywords) else "ham"
-
-    return jsonify({"prediction": prediction})
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
