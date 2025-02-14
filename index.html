@@ -1,47 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMS Spam Detector</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        input {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-        }
-        button {
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #28a745;
-            color: white;
-            border: none;
-        }
-        #result {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
-
-    <h2>SMS Spam Detector</h2>
+    <h2>SMS Spam Detection</h2>
+    <form action="/predict" method="post">
+        <textarea name="message" rows="4" cols="50" placeholder="Enter your message here..."></textarea><br><br>
+        <input type="submit" value="Check">
+    </form>
     
-    <label for="smsInput">Enter SMS:</label>
-    <input type="text" id="smsInput" placeholder="Type your message here">
-
-    <button id="checkButton">Check</button>
-
-    <div id="result"></div>
-
-    <!-- Make sure the script is linked at the end -->
-    <script src="script.js"></script> 
-
+    {% if prediction_text %}
+        <h3>{{ prediction_text }}</h3>
+    {% endif %}
 </body>
 </html>
