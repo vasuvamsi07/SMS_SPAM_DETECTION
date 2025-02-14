@@ -31,19 +31,20 @@ document.addEventListener("DOMContentLoaded", function () {
             let data = await response.json();
             console.log("API Response:", data);
 
-            if (typeof data.result === "undefined") {
+            if (typeof data.predection === "undefined") {
                 resultDiv.innerHTML = "<p style='color: orange;'>Unexpected API response format!</p>";
                 return;
             }
 
             // Updated checks for "spam" or "ham"
-            if (data.result === "spam") {
-                resultDiv.innerHTML = "<p style='color: red; font-weight: bold;'>Spam!</p>";
-            } else if (data.result === "ham") {
-                resultDiv.innerHTML = "<p style='color: green; font-weight: bold;'>Not Spam (Ham)</p>";
-            } else {
-                resultDiv.innerHTML = "<p style='color: orange;'>Unexpected API response value.</p>";
-            }
+          if (data.prediction === "spam") {
+    resultDiv.innerHTML = "<p style='color: red; font-weight: bold;'>Spam!</p>";
+} else if (data.prediction === "ham") {
+    resultDiv.innerHTML = "<p style='color: green; font-weight: bold;'>Not Spam (Ham)</p>";
+} else {
+    resultDiv.innerHTML = "<p style='color: orange;'>Unexpected API response value.</p>";
+}
+
 
         } catch (error) {
             console.error("Error:", error);
